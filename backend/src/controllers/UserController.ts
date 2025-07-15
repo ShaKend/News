@@ -1,6 +1,7 @@
 import * as service from "../services/UserService";
 import { Request, Response } from "express";
 import { UserType } from "../types/UserType";
+import jwt from 'jsonwebtoken';
 
 export const getUserById = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -89,8 +90,13 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
+        const key = process.env.JWT_KEY;
         if (!email || !password) {
             res.status(400).json({ error: "Missing email or password" });
+            return;
+        }
+        if (!key) {
+            res.status(500).json({ error: "JWT key is not defined" });
             return;
         }
 
@@ -100,7 +106,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        res.status(200).json(user);
+        const token = jwt.sign({payload: {userId: user.user_id}}, key, {expiresIn: '7d'}); 
+
+        res.status(200).json({data: user, token});
         return;
     } catch (err) {
         console.error("Error:", err);
