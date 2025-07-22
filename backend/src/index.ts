@@ -1,6 +1,7 @@
 import express, {Request, Response} from "express";
 import cors from "cors";
 import userRoute from "./routes/UserRoute";
+import favoriteRoute from "./routes/FavoriteRoute";
 
 require('dotenv').config();
 const app = express();
@@ -11,6 +12,7 @@ app.use(cors())
 
 // API
 app.use('/api/user', userRoute);
+app.use('/api/favorite', favoriteRoute);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('This server is running!');
