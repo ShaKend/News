@@ -4,9 +4,9 @@ import { JWTAuth } from "../middlewares/JWTAuth";
 
 const favoriteRoute = express.Router();
 
-favoriteRoute.get("/:userId", getAllFavorites, JWTAuth);
-favoriteRoute.get("/:userId/:articleUrl", getOneFavorite, JWTAuth);  
-favoriteRoute.post("/", addFavorite, JWTAuth);
-favoriteRoute.delete("/:userId/:articleUrl", deleteFavorite, JWTAuth);
+favoriteRoute.get("/:userId", JWTAuth, getAllFavorites);
+favoriteRoute.get("/:userId/:articleUrl", JWTAuth, getOneFavorite);  
+favoriteRoute.post("/", JWTAuth, addFavorite);
+favoriteRoute.delete("/:userId/:articleUrl", JWTAuth, deleteFavorite);
 
 export default favoriteRoute;
